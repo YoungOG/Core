@@ -11,6 +11,7 @@ import org.ml.core.encoding.encodeValue
 // TODO: Make a protocol design/wiki document listing all protocol ids
 @Singleton
 class CrossServerService {
+    private val messageHandlers = arrayListOf<MessageHandler>()
 
     fun <T : Message> broadcast(message: T) {
         this.send(Channel.ALL, message)
@@ -22,6 +23,18 @@ class CrossServerService {
         message.encode(buf)
         // TODO: Send over Redis/RabbitMQ/Other
     }
+
+    fun registerHandler(messageId: Byte, handler: MessageHandler) {
+        while (messageId >= this.messageHandlers.size) {
+            this.messageHandlers.add() {}
+        }
+
+        this.messageHandlers[messageId.toInt()] = handler
+    }
+}
+
+fun interface MessageHandler {
+    fun handle(message: ByteBuf)
 }
 
 enum class Channel {

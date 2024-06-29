@@ -48,6 +48,7 @@ fun encodeList(buf: ByteBuf, value: List<*>) {
 
         encodeValue(buf, v)    }
 }
+
 fun encodeArray(buf: ByteBuf, value: Array<*>) {
     // TODO: Assert length or list and all values are same type
     buf.writeShortLE(value.size)

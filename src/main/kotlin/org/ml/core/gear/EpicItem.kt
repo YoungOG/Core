@@ -9,7 +9,8 @@ class EpicItem(
     val name: String,
     val lore: ArrayList<String>,
     val attributes: ArrayList<AttributePair>,
-    val enchantments: ArrayList<Enchantment>,) {
+    val enchantments: ArrayList<Enchantment>,
+) {
 }
 
 

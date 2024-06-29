@@ -8,7 +8,7 @@ class CoreMainModule(private val plugin: CorePlugin) : AbstractModule() {
     override fun configure() {
         bind(CorePlugin::class.java).toInstance(plugin)
         bind(CrossServerService::class.java).asEagerSingleton()
-        bind(EpicItemService::class.java).toInstance(EpicItemService().initialize(plugin))
+        bind(EpicItemService::class.java).asEagerSingleton()
 
         // Additional bindings can be defined here
     }
