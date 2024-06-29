@@ -25,6 +25,7 @@ class CrossServerService {
     }
 
     fun <T : Message> send(channel: Channel, message: T) {
+        // TODO: Check so that ByteBuf it released properly
         val buf = ByteBufAllocator.DEFAULT.buffer()
         message.encode(buf)
         // TODO: Send over Redis/RabbitMQ/Other
