@@ -1,9 +1,11 @@
 package org.ml.core.gear
 
-import org.bukkit.inventory.ItemStack
-import org.ml.core.CorePlugin
+import com.google.inject.Injector
 import java.util.*
 import javax.inject.Singleton
+import net.axay.kspigot.commands.command
+import org.bukkit.inventory.ItemStack
+import org.ml.core.CorePlugin
 
 @Singleton
 class EpicItemService {
@@ -18,7 +20,6 @@ class EpicItemService {
 
         println("Loading epic items for ${corePlugin.name}: ${corePlugin.isEnabled}")
 
-
         // Load from TOML file
         return this
     }
@@ -28,11 +29,21 @@ class EpicItemService {
     }
 
     fun getItemStack(itemId: UUID): ItemStack {
-        return this.itemStacks.getOrElse(itemId) {
-            ItemStack.empty()
-        }
+        return this.itemStacks.getOrElse(itemId) { ItemStack.empty() }
     }
 }
 
+fun registerEpicItemCommands(injector: Injector) {
+    command("gear") {
+        literal("reload") {
+            runs {
+                print("Reload")
+                print(" here")
+            }
+        }
+    }
 
+    reloadCommand(injector)
+}
 
+fun reloadCommand(injector: Injector) {}

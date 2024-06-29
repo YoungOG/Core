@@ -2,10 +2,10 @@ package org.ml.core
 
 import com.google.inject.Guice
 import com.google.inject.Injector
+import javax.inject.Inject
 import net.axay.kspigot.commands.*
 import net.axay.kspigot.main.KSpigot
 import org.bukkit.Bukkit
-import javax.inject.Inject
 
 class CorePlugin : KSpigot() {
 
@@ -14,8 +14,7 @@ class CorePlugin : KSpigot() {
             private set
     }
 
-    @Inject
-    lateinit var injector: Injector
+    @Inject lateinit var injector: Injector
 
     override fun load() {
         INSTANCE = this
@@ -31,11 +30,7 @@ class CorePlugin : KSpigot() {
 
     private fun setupCommands() {
         command("squad") {
-            literal("create") {
-                runs {
-                    this.sender.bukkitSender.sendMessage("hey gamer ;)")
-                }
-            }
+            literal("create") { runs { this.sender.bukkitSender.sendMessage("hey gamer ;)") } }
         }
     }
 }
