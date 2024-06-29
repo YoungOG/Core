@@ -4,6 +4,8 @@ import com.google.inject.Injector
 import java.util.*
 import javax.inject.Singleton
 import net.axay.kspigot.commands.command
+import net.axay.kspigot.commands.literal
+import net.axay.kspigot.commands.runs
 import org.bukkit.inventory.ItemStack
 import org.ml.core.CorePlugin
 

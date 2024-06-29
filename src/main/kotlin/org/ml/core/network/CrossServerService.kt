@@ -1,10 +1,9 @@
-package org.ml.core.crossServer
+package org.ml.core.network
 
 import io.netty.buffer.ByteBuf
 import io.netty.buffer.ByteBufAllocator
 import java.util.UUID
 import javax.inject.Singleton
-import org.ml.core.CorePlugin
 import org.ml.core.encoding.encodeUUID
 import org.ml.core.encoding.encodeValue
 
@@ -12,13 +11,6 @@ import org.ml.core.encoding.encodeValue
 // TODO: Make a protocol design/wiki document listing all protocol ids
 @Singleton
 class CrossServerService {
-
-    private lateinit var corePlugin: CorePlugin
-
-    fun init(corePlugin: CorePlugin): CrossServerService {
-        this.corePlugin = corePlugin
-        return this
-    }
 
     fun <T : Message> broadcast(message: T) {
         this.send(Channel.ALL, message)

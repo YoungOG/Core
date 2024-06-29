@@ -30,6 +30,7 @@ dependencies {
     paperDevBundle("1.20.6-R0.1-SNAPSHOT")
 
     implementation("com.google.inject:guice:7.0.0")
+    implementation("com.google.inject.extensions:guice-assistedinject:7.0.0")
     implementation(libs.guava)
     implementation("cc.ekblad:4koma:1.2.0")
     implementation("net.axay:kspigot:1.20.4")
