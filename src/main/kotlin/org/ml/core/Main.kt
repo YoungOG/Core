@@ -39,5 +39,3 @@ class CorePlugin : KSpigot() {
         }
     }
 }
-
-val Manager by lazy { CorePlugin.INSTANCE }
