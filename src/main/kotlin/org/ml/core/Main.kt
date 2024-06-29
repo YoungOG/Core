@@ -1,4 +1,4 @@
-package org.ml
+package org.ml.core
 
 import net.axay.kspigot.commands.*
 import net.axay.kspigot.main.KSpigot

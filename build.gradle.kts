@@ -12,7 +12,7 @@ plugins {
     id("xyz.jpenilla.resource-factory-bukkit-convention") version "1.1.1" // Generates plugin.yml based on the Gradle config
 }
 
-group = "org.ml.core"
+group = "org.ml"
 version = "1.0.0-SNAPSHOT"
 description = "Core gameplay plugin"
 
@@ -24,7 +24,7 @@ dependencies {
     api(libs.commons.math3)
     implementation(libs.guava)
 
-    paperDevBundle("1.20.4-R0.1-SNAPSHOT")
+    paperDevBundle("1.20.6-R0.1-SNAPSHOT")
     implementation("net.axay:kspigot:1.20.4")
 }
 
@@ -44,7 +44,6 @@ tasks {
 
     withType<KotlinCompile> {
         compilerOptions.jvmTarget.set(JvmTarget.JVM_21)
-        kotlinOptions.jvmTarget = "21"
     }
 
     shadowJar
@@ -61,4 +60,5 @@ bukkitPluginYaml {
     load = BukkitPluginYaml.PluginLoadOrder.STARTUP
     authors.add("EnanderW / Young_Explicit")
     apiVersion = "1.20"
+    libraries = listOf("net.axay:kspigot:1.20.4")
 }

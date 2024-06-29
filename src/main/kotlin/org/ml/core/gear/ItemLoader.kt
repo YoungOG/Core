@@ -1,4 +1,4 @@
-package org.ml.gear
+package org.ml.core.gear
 
 import org.bukkit.inventory.ItemStack
 import java.util.UUID
