@@ -1,0 +1,8 @@
+api-version: '1.20'
+name: Core
+version: 1.0.0-SNAPSHOT
+main: org.ml.core.CorePlugin
+description: Core gameplay plugin
+load: STARTUP
+authors:
+- EnanderW / Young_Explicit
