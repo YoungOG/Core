@@ -1,6 +1,8 @@
 # IntelliJ IDEA files
 .idea/
 
+.kotlin/
+
 # Build output directory
 /build/
 

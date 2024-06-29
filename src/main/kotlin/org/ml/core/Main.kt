@@ -1,8 +1,11 @@
 package org.ml.core
 
+import com.google.inject.Guice
+import com.google.inject.Injector
 import net.axay.kspigot.commands.*
 import net.axay.kspigot.main.KSpigot
 import org.bukkit.Bukkit
+import javax.inject.Inject
 
 class CorePlugin : KSpigot() {
 
@@ -11,22 +14,29 @@ class CorePlugin : KSpigot() {
             private set
     }
 
+    @Inject
+    lateinit var injector: Injector
+
     override fun load() {
         INSTANCE = this
     }
 
     override fun startup() {
-        val plugin = this
+        injector = Guice.createInjector(CoreMainModule(this))
+        injector.injectMembers(this)
 
+        setupCommands()
+        Bukkit.getLogger().info("Plugin enabled!")
+    }
+
+    private fun setupCommands() {
         command("squad") {
             literal("create") {
                 runs {
-                   print("Hello!")
+                    this.sender.bukkitSender.sendMessage("hey gamer ;)")
                 }
             }
         }
-
-        Bukkit.getLogger().info("YOOOOOOO!")
     }
 }
 

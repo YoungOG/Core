@@ -18,13 +18,20 @@ description = "Core gameplay plugin"
 
 repositories {
     mavenCentral()
+
+    maven {
+        url = uri("https://jitpack.io")
+    }
 }
 
 dependencies {
     api(libs.commons.math3)
-    implementation(libs.guava)
 
     paperDevBundle("1.20.6-R0.1-SNAPSHOT")
+
+    implementation("com.google.inject:guice:7.0.0")
+    implementation(libs.guava)
+    implementation("cc.ekblad:4koma:1.2.0")
     implementation("net.axay:kspigot:1.20.4")
 }
 

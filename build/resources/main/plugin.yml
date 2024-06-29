@@ -6,3 +6,5 @@ description: Core gameplay plugin
 load: STARTUP
 authors:
 - EnanderW / Young_Explicit
+libraries:
+- net.axay:kspigot:1.20.4
