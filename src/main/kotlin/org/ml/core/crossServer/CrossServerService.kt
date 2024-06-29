@@ -1,9 +1,12 @@
 package org.ml.core.crossServer
 
 import io.netty.buffer.ByteBuf
+import io.netty.buffer.ByteBufAllocator
 import java.util.UUID
 import javax.inject.Singleton
 import org.ml.core.CorePlugin
+import org.ml.core.encoding.encodeUUID
+import org.ml.core.encoding.encodeValue
 
 // TODO: Rename Network?
 // TODO: Make a protocol design/wiki document listing all protocol ids
@@ -21,7 +24,11 @@ class CrossServerService {
         this.send(Channel.ALL, message)
     }
 
-    fun <T : Message> send(channel: Channel, message: T) {}
+    fun <T : Message> send(channel: Channel, message: T) {
+        val buf = ByteBufAllocator.DEFAULT.buffer()
+        message.encode(buf)
+        // TODO: Send over Redis/RabbitMQ/Other
+    }
 }
 
 enum class Channel {
@@ -37,10 +44,7 @@ abstract class Message(val messageId: Byte) {
 
 abstract class AutoMessage(messageId: Byte) : Message(messageId) {
     override fun encode(buf: ByteBuf) {
-        val fields = this::class.java.declaredFields
-        for (field in fields) {
-
-        }
+        encodeValue(buf, this)
     }
 }
 
@@ -51,9 +55,8 @@ class ReloadEpicItemConfigMessage : Message(0) {
 // TODO: This is just an example of manual message, the actual message will be different
 class SetPlayerMoneyMessage(val playerId: UUID, val amount: Int) : Message(1) {
     override fun encode(buf: ByteBuf) {
-        buf.writeLong(this.playerId.leastSignificantBits)
-        buf.writeLong(this.playerId.mostSignificantBits)
-        buf.writeInt(amount)
+        encodeUUID(buf, playerId)
+        buf.writeIntLE(amount)
     }
 }
 
