@@ -11,11 +11,16 @@ import net.axay.kspigot.commands.literal
 import net.axay.kspigot.commands.runs
 import org.bukkit.inventory.ItemStack
 import org.ml.core.CorePlugin
+import org.ml.core.config.ConfigService
+
+private data class EpicItemConfig(
+    val item: List<EpicItem>
+) {}
 
 @Singleton
 class EpicItemService @Inject constructor(
     corePlugin: CorePlugin,
-    private val mapper: TomlMapper
+    configService: ConfigService,
 ) {
 
     private val items = hashMapOf<UUID, EpicItem>()
@@ -23,17 +28,16 @@ class EpicItemService @Inject constructor(
 
     init {
         print("Requesting epic gear configs.")
+        val loadedItems = configService.createOrLoadConfigsInFolder<EpicItemConfig>("items")
 
-    }
+        for (itemList in loadedItems) {
+            for (item in itemList.item) {
+                this.items[item.id] = item
+                println("Loaded item ${item.name}")
+                //        this.itemStacks[item.id] =
+            }
+        }
 
-
-    fun loadItem(config: String): EpicItem {
-        val item = mapper.decode<EpicItem>(config)
-
-        this.items[item.id] = item
-//        this.itemStacks[item.id] =
-
-        return item
     }
 
     fun getItemStack(item: EpicItem): ItemStack {

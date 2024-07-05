@@ -6,6 +6,7 @@ import javax.inject.Inject
 import net.axay.kspigot.commands.*
 import net.axay.kspigot.main.KSpigot
 import org.bukkit.Bukkit
+import java.io.File
 
 class CorePlugin : KSpigot() {
 
@@ -21,11 +22,19 @@ class CorePlugin : KSpigot() {
     }
 
     override fun startup() {
-        injector = Guice.createInjector(CoreMainModule(this))
-        injector.injectMembers(this)
+        if (!this.dataFolder.exists()) {
+            println("${this.dataFolder.absolutePath} doesn't exist!")
+            val creationResult = this.dataFolder.mkdir()
+            if (!creationResult) {
+                throw Exception("Could not create file HANDLE THIS SHIT")
+            }
+        }
 
         setupCommands()
         Bukkit.getLogger().info("Plugin enabled!")
+
+        injector = Guice.createInjector(CoreMainModule(this))
+        injector.injectMembers(this)
     }
 
     private fun setupCommands() {

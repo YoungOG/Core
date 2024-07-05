@@ -7,9 +7,9 @@ import java.util.UUID
 class EpicItem(
     val id: UUID,
     val name: String,
-    val lore: ArrayList<String>,
-    val attributes: ArrayList<AttributePair>,
-    val enchantments: ArrayList<Enchantment>,
+    val lore: ArrayList<String>?,
+    val attributes: ArrayList<AttributePair>?,
+    val enchantments: ArrayList<Enchantment>?,
 ) {
 }
 
