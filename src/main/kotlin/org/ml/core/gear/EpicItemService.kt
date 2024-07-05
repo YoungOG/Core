@@ -1,5 +1,6 @@
 package org.ml.core.gear
 
+import cc.ekblad.toml.TomlMapper
 import cc.ekblad.toml.decode
 import com.google.inject.Inject
 import com.google.inject.Injector
@@ -10,12 +11,11 @@ import net.axay.kspigot.commands.literal
 import net.axay.kspigot.commands.runs
 import org.bukkit.inventory.ItemStack
 import org.ml.core.CorePlugin
-import org.ml.core.config.ConfigService
 
 @Singleton
 class EpicItemService @Inject constructor(
     corePlugin: CorePlugin,
-    private val configService: ConfigService,
+    private val mapper: TomlMapper
 ) {
 
     private val items = hashMapOf<UUID, EpicItem>()
@@ -28,7 +28,7 @@ class EpicItemService @Inject constructor(
 
 
     fun loadItem(config: String): EpicItem {
-        val item = configService.mapper.decode<EpicItem>(config)
+        val item = mapper.decode<EpicItem>(config)
 
         this.items[item.id] = item
 //        this.itemStacks[item.id] =
