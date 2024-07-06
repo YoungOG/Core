@@ -5,6 +5,7 @@ import cc.ekblad.toml.model.TomlValue
 import cc.ekblad.toml.tomlMapper
 import com.google.inject.Inject
 import com.google.inject.Singleton
+import org.bukkit.enchantments.Enchantment
 import org.ml.core.CorePlugin
 import java.io.File
 import java.util.UUID
@@ -22,6 +23,12 @@ constructor(
         }
         encoder<UUID> {
             TomlValue.String(it.toString())
+        }
+        decoder<TomlValue.String, Enchantment> { it: TomlValue.String ->
+            Enchantment.getByName(it.value)
+        }
+        encoder<Enchantment> {
+            TomlValue.String(it.name)
         }
     }
 
