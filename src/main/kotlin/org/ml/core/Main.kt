@@ -5,9 +5,17 @@ import com.google.inject.Injector
 import javax.inject.Inject
 import net.axay.kspigot.commands.*
 import net.axay.kspigot.main.KSpigot
+import net.minecraft.core.MappedRegistry
+import net.minecraft.core.Registry
+import net.minecraft.core.UUIDUtil
+import net.minecraft.core.component.DataComponentType
+import net.minecraft.core.registries.BuiltInRegistries
+import net.minecraft.util.ExtraCodecs
 import org.bukkit.Bukkit
 import org.ml.core.gear.registerEpicItemCommands
 import java.io.File
+import java.util.UUID
+import java.util.function.UnaryOperator
 
 class CorePlugin : KSpigot() {
 
@@ -16,7 +24,8 @@ class CorePlugin : KSpigot() {
             private set
     }
 
-    @Inject lateinit var injector: Injector
+    @Inject
+    lateinit var injector: Injector
 
     override fun load() {
         INSTANCE = this

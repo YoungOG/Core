@@ -2,13 +2,17 @@ package org.ml.core.gear
 
 import net.axay.kspigot.items.addLore
 import net.kyori.adventure.text.Component
+import net.minecraft.core.component.DataComponents
+import net.minecraft.nbt.CompoundTag
+import net.minecraft.world.item.component.CustomData
 import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier.Operation
+import org.bukkit.craftbukkit.inventory.CraftItemStack
 import org.bukkit.inventory.ItemStack
 import java.util.UUID
 
-class EpicItem(
+data class EpicItem(
     val id: UUID,
     val name: String,
     val material: Material,
@@ -61,13 +65,15 @@ fun epicItemToItemStack(epicItem: EpicItem): ItemStack {
             val slot = org.bukkit.inventory.EquipmentSlotGroup.getByName(attribute.modifier.slot.name.toLowerCase())
                 ?: continue
 
-            meta.addAttributeModifier(attribute.attribute, org.bukkit.attribute.AttributeModifier(
-                attribute.modifier.id,
-                "",
-                attribute.modifier.amount,
-                attribute.modifier.operation,
-               slot,
-            ))
+            meta.addAttributeModifier(
+                attribute.attribute, org.bukkit.attribute.AttributeModifier(
+                    attribute.modifier.id,
+                    "",
+                    attribute.modifier.amount,
+                    attribute.modifier.operation,
+                    slot,
+                )
+            )
         }
     }
 
@@ -79,5 +85,13 @@ fun epicItemToItemStack(epicItem: EpicItem): ItemStack {
 
     item.itemMeta = meta
 
-    return item
+    val craftStack = CraftItemStack.asNMSCopy(item)
+
+    val tag = CompoundTag()
+    tag.putUUID("gear_id", epicItem.id)
+    val customData = CustomData.of(tag)
+
+    craftStack.set(DataComponents.CUSTOM_DATA, customData)
+
+    return CraftItemStack.asBukkitCopy(craftStack)
 }
