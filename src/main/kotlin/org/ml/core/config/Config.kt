@@ -1,12 +1,14 @@
 package org.ml.core.config
 
 import cc.ekblad.toml.decode
+import cc.ekblad.toml.encodeTo
 import cc.ekblad.toml.model.TomlValue
 import cc.ekblad.toml.tomlMapper
 import com.google.inject.Inject
 import com.google.inject.Singleton
 import org.bukkit.enchantments.Enchantment
 import org.ml.core.CorePlugin
+import org.ml.core.profile.Profile
 import java.io.File
 import java.util.UUID
 
@@ -14,9 +16,8 @@ import java.util.UUID
 class ConfigService
 @Inject
 constructor(
-    val corePlugin: CorePlugin,
+    private val corePlugin: CorePlugin,
 ) {
-
     val mapper = tomlMapper {
         decoder<TomlValue.String, UUID> { it: TomlValue.String ->
             UUID.fromString(it.value)
@@ -32,16 +33,21 @@ constructor(
         }
     }
 
-    inline fun <reified T> createOrLoadConfigsInFolder(folderName: String): List<T> {
-        val folder = File(this.corePlugin.dataFolder, folderName)
-        if (!folder.exists()) {
-            val creationResult = folder.mkdir()
-            if (!creationResult) {
-                throw Exception("Could not create $folderName HANDLE THIS SHIT")
-            } else {
-                return listOf()
+    fun ensureFolderExists(folderName: String): File? {
+        val file = File(this.corePlugin.dataFolder, folderName)
+        if (!file.exists()) {
+            val result = file.mkdirs()
+            if (!result) {
+                return null
             }
+
         }
+
+        return file;
+    }
+
+    inline fun <reified T> createOrLoadConfigsInFolder(folderName: String): List<T> {
+        val folder = ensureFolderExists(folderName) ?: throw Exception("Could not create $folderName HANDLE THIS SHIT")
 
         val loadedItems = arrayListOf<T>()
         folder.walkTopDown().filter {
@@ -53,4 +59,26 @@ constructor(
 
         return loadedItems
     }
+
+    fun loadProfile(id: UUID): Profile? {
+        val file = File(this.corePlugin.dataFolder, "profiles/${id}.toml")
+        if (!file.exists()) {
+            return null
+        }
+
+        return mapper.decode<Profile>(file.inputStream())
+    }
+
+    fun saveProfile(profile: Profile) {
+        val folder = ensureFolderExists("profiles") ?: throw Exception("Could not create HANDLE THIS SHIT")
+        val file = File(folder, "${profile.id}.toml")
+        if (!file.exists()) {
+            file.createNewFile()
+        }
+
+        mapper.encodeTo(file.outputStream(), profile)
+    }
+
 }
+
+

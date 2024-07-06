@@ -12,7 +12,9 @@ import net.minecraft.core.component.DataComponentType
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.util.ExtraCodecs
 import org.bukkit.Bukkit
+import org.bukkit.event.Listener
 import org.ml.core.gear.registerEpicItemCommands
+import org.ml.core.profile.ProfileListeners
 import java.io.File
 import java.util.UUID
 import java.util.function.UnaryOperator
@@ -46,6 +48,8 @@ class CorePlugin : KSpigot() {
         injector = Guice.createInjector(CoreMainModule(this))
         injector.injectMembers(this)
 
+        listener(ProfileListeners())
+
         setupCommands()
     }
 
@@ -55,5 +59,13 @@ class CorePlugin : KSpigot() {
         }
 
         registerEpicItemCommands(this.injector)
+    }
+
+    private fun listener(listener: Listener) {
+        val pm = Bukkit.getPluginManager()
+
+        injector.injectMembers(listener)
+
+        pm.registerEvents(listener, this)
     }
 }
