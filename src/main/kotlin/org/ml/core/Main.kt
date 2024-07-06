@@ -14,6 +14,7 @@ import net.minecraft.util.ExtraCodecs
 import org.bukkit.Bukkit
 import org.bukkit.event.Listener
 import org.ml.core.gear.registerEpicItemCommands
+import org.ml.core.magic.openSpellGUI
 import org.ml.core.magic.selectNextSpell
 import org.ml.core.magic.useSelectedSpell
 import org.ml.core.profile.ProfileListeners
@@ -74,6 +75,12 @@ class CorePlugin : KSpigot() {
             literal("use") {
                 runs {
                     player.useSelectedSpell()
+                }
+            }
+
+            literal("menu") {
+                runs {
+                    openSpellGUI(player)
                 }
             }
         }

@@ -1,32 +1,16 @@
 package org.ml.core.magic
 
+import net.kyori.adventure.text.Component
+import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.ml.core.CorePlugin
 import org.ml.core.profile.ProfileService
 
-abstract class MagicSpell(val name: String) {
+abstract class MagicSpell(val name: String, val displayName: Component, val displayMaterial: Material) {
     abstract fun use(player: Player)
 }
 
-class BlinkSpell : MagicSpell("blink") {
-    override fun use(player: Player) {
-        player.sendMessage("You blinked.")
-    }
-}
-
-class LeapSpell : MagicSpell("leap") {
-    override fun use(player: Player) {
-        player.sendMessage("You leaped.")
-    }
-}
-
-class CrippleSpell : MagicSpell("cripple") {
-    override fun use(player: Player) {
-        player.sendMessage("You crippled.")
-    }
-}
-
-private val SPELLS = arrayOf(
+val SPELLS = arrayOf(
     BlinkSpell(),
     LeapSpell(),
     CrippleSpell()

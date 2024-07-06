@@ -65,6 +65,10 @@ class EpicItemService @Inject constructor(
     fun getItemNamesList(): List<String> {
         return this.itemNames.keys.toList()
     }
+
+    fun getEpicItemsList(): List<EpicItem> {
+        return items.values.toList()
+    }
 }
 
 fun registerEpicItemCommands(injector: Injector) {
@@ -74,6 +78,12 @@ fun registerEpicItemCommands(injector: Injector) {
             runs {
                 epicItemService.loadConfigs()
                 player.sendMessage("Reloaded config")
+            }
+        }
+
+        literal("menu") {
+            runs {
+                openGearGUI(player)
             }
         }
 
@@ -103,3 +113,5 @@ fun registerEpicItemCommands(injector: Injector) {
 }
 
 fun reloadCommand(injector: Injector) {}
+
+inline fun cloneStack(itemStack: ItemStack, builder: ItemStack.() -> Unit) = itemStack.clone().apply(builder)
