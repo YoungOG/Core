@@ -155,26 +155,6 @@ private val BORDER = itemStack(Material.BLACK_STAINED_GLASS_PANE) {
     }
 }
 
-//private val SEARCH_PANE = itemStack(Material.LIME_STAINED_GLASS_PANE) {
-//    meta {
-//        name = literalText("Click to search recipe") {
-//            color = KColors.AQUA
-//        }
-//    }
-//}
-//
-//private val NO_RECIPE_FOUND = itemStack(Material.RED_STAINED_GLASS_PANE) {
-//    meta {
-//        name = literalText("No recipe found. Click again to search recipe") {
-//            color = KColors.RED
-//        }
-//
-//        addLore {
-//            +"§8Put items in the inventory and then click this item to search for a recipe."
-//        }
-//    }
-//}
-
 fun openCraftingGUI(player: Player) {
     val inventory = Bukkit.createInventory(CraftingGUI(), 45, "§bCrafting Menu")
 
@@ -195,8 +175,6 @@ fun openCraftingGUI(player: Player) {
     inventory.setItem(15, BORDER)
     inventory.setItem(33, BORDER)
     inventory.setItem(16, BORDER)
-
-//    inventory.setItem(25, SEARCH_PANE)
 
     player.openInventory(inventory)
 }

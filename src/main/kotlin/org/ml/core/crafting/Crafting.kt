@@ -42,8 +42,6 @@ class CraftingService @Inject constructor(
         }
     }
 
-    // TODO: CHECK
-    // 'items' will be modified in the function
     fun findRecipe(items: ArrayList<ItemStack>): CraftingRecipe? {
         recipe@ for (recipe in recipes) {
             if (items.size != recipe.components.size) continue
@@ -52,25 +50,8 @@ class CraftingService @Inject constructor(
                 for (i in 0..<items.size) {
                     val stack = items[i]
                     if (matchesItem(component, stack)) {
-//                        items.removeAt(i)
                         continue@component
                     }
-
-//                    if (stack.amount < component.amount)
-//                        continue@recipe
-//
-//                    if (component.epicItem != null) {
-//                        val epicItem = itemService.getItemFromStack(stack)
-//                        if (epicItem != null && epicItem.id == component.epicItem) {
-//                            items.removeAt(i)
-//                            continue@component
-//                        }
-//                    } else if (component.material != null) {
-//                        if (stack.type == component.material) {
-//                            items.removeAt(i)
-//                            continue@component
-//                        }
-//                    }
                 }
 
                 continue@recipe
