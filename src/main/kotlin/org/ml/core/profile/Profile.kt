@@ -17,14 +17,24 @@ data class Profile(
     val id: UUID,
     var name: String,
     val ignoredPlayers: List<UUID>?,
+    val spells: List<Int>?,
 ) {
 
-    constructor(id: UUID, name: String) : this(id, name, null)
+    constructor(id: UUID, name: String) : this(id, name, null, null)
+}
+
+data class OnlineProfile(
+    val id: UUID,
+    var name: String,
+    val ignoredPlayers: List<UUID>,
+    var selectedSpell: Int,
+    val spells: List<Int>,
+) {
 }
 
 @Singleton
 class ProfileService @Inject constructor(private val configService: ConfigService) {
-    private var profiles = hashMapOf<UUID, Profile>()
+    private var profiles = hashMapOf<UUID, OnlineProfile>()
     private var loadingProfiles = ConcurrentHashMap<UUID, Profile>()
 
     fun loadProfile(id: UUID, name: String) {
@@ -36,15 +46,27 @@ class ProfileService @Inject constructor(private val configService: ConfigServic
 
         profile.name = name
 
-        println("Loaded profile ${profile.name}")
-
         loadingProfiles[id] = profile
     }
 
     fun transferProfile(id: UUID) {
         val profile = loadingProfiles.remove(id) ?: throw Exception("HANDLE")
 
-        profiles[id] = profile
+        println("Loaded profile ${profile.name}")
+
+        val onlineProfile = OnlineProfile(
+            id,
+            profile.name,
+            profile.ignoredPlayers ?: emptyList(),
+            0,
+//            profile.spells ?: emptyList()
+            listOf(0, 1, 2)
+        )
+        profiles[id] = onlineProfile
+    }
+
+    fun getProfile(id: UUID): OnlineProfile {
+        return profiles[id] ?: throw Exception("Profile not found")
     }
 }
 

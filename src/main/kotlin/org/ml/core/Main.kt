@@ -14,6 +14,8 @@ import net.minecraft.util.ExtraCodecs
 import org.bukkit.Bukkit
 import org.bukkit.event.Listener
 import org.ml.core.gear.registerEpicItemCommands
+import org.ml.core.magic.selectNextSpell
+import org.ml.core.magic.useSelectedSpell
 import org.ml.core.profile.ProfileListeners
 import java.io.File
 import java.util.UUID
@@ -55,7 +57,25 @@ class CorePlugin : KSpigot() {
 
     private fun setupCommands() {
         command("squad") {
-            literal("create") { runs { this.sender.bukkitSender.sendMessage("hey gamer ;)") } }
+            literal("create") {
+                runs {
+                    this.sender.bukkitSender.sendMessage("hey gamer ;)")
+                }
+            }
+        }
+
+        command("spell") {
+            literal("next") {
+                runs {
+                    player.selectNextSpell()
+                }
+            }
+
+            literal("use") {
+                runs {
+                    player.useSelectedSpell()
+                }
+            }
         }
 
         registerEpicItemCommands(this.injector)
