@@ -12,7 +12,12 @@ import net.minecraft.core.component.DataComponentType
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.util.ExtraCodecs
 import org.bukkit.Bukkit
+import org.bukkit.craftbukkit.entity.CraftPlayer
 import org.bukkit.event.Listener
+import org.bukkit.inventory.CraftingInventory
+import org.ml.core.crafting.CraftingGUI
+import org.ml.core.crafting.CraftingListeners
+import org.ml.core.crafting.CraftingService
 import org.ml.core.gear.registerEpicItemCommands
 import org.ml.core.magic.openSpellGUI
 import org.ml.core.magic.selectNextSpell
@@ -36,6 +41,17 @@ class CorePlugin : KSpigot() {
         INSTANCE = this
     }
 
+    override fun shutdown() {
+        // Refund items in crafting inventory
+        for (player in Bukkit.getOnlinePlayers()) {
+            val craftingService = injector.getInstance(CraftingService::class.java)
+            val inventory = player.openInventory.topInventory
+            if (inventory.holder !is CraftingGUI) continue
+
+            craftingService.closeCraftingGUI(player, inventory)
+        }
+    }
+
     override fun startup() {
         if (!this.dataFolder.exists()) {
             println("${this.dataFolder.absolutePath} doesn't exist!")
@@ -52,6 +68,7 @@ class CorePlugin : KSpigot() {
         injector.injectMembers(this)
 
         listener(ProfileListeners())
+        listener(CraftingListeners())
 
         setupCommands()
     }

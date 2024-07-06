@@ -20,6 +20,7 @@ data class EpicItem(
     val lore: List<String>?,
     val attributes: List<AttributePair>?,
     val enchantments: List<Enchantment>?,
+    val durability: Int?,
 ) {
 }
 
@@ -84,7 +85,6 @@ fun epicItemToItemStack(epicItem: EpicItem): ItemStack {
     }
 
     item.itemMeta = meta
-
     val craftStack = CraftItemStack.asNMSCopy(item)
 
     val tag = CompoundTag()
@@ -92,6 +92,10 @@ fun epicItemToItemStack(epicItem: EpicItem): ItemStack {
     val customData = CustomData.of(tag)
 
     craftStack.set(DataComponents.CUSTOM_DATA, customData)
+
+    if (epicItem.durability != null) {
+        craftStack.set(DataComponents.MAX_DAMAGE, epicItem.durability)
+    }
 
     return CraftItemStack.asBukkitCopy(craftStack)
 }

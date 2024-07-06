@@ -6,11 +6,14 @@ import com.google.inject.Inject
 import com.google.inject.Injector
 import com.mojang.brigadier.arguments.StringArgumentType
 import net.axay.kspigot.commands.*
+import net.minecraft.core.component.DataComponents
+import org.bukkit.craftbukkit.inventory.CraftItemStack
 import java.util.*
 import javax.inject.Singleton
 import org.bukkit.inventory.ItemStack
 import org.ml.core.CorePlugin
 import org.ml.core.config.ConfigService
+import org.ml.core.crafting.openCraftingGUI
 
 private data class EpicItemConfig(
     val item: List<EpicItem>
@@ -50,12 +53,21 @@ class EpicItemService @Inject constructor(
         }
     }
 
-    fun getItemStack(item: EpicItem): ItemStack {
+    fun getItemFromStack(stack: ItemStack): EpicItem? {
+        val craftStack = CraftItemStack.asNMSCopy(stack)
+        val customData = craftStack.get(DataComponents.CUSTOM_DATA) ?: return null
+        val id = customData.unsafe.getUUID("gear_id")
+
+        return items[id]
+    }
+
+    fun getItemStack(item: EpicItem): ItemStack? {
         return this.getItemStack(item.id)
     }
 
-    fun getItemStack(itemId: UUID): ItemStack {
-        return this.itemStacks.getOrElse(itemId) { ItemStack.empty() }
+    fun getItemStack(itemId: UUID): ItemStack? {
+        val item = itemStacks[itemId] ?: return null
+        return item.clone()
     }
 
     fun getItemByName(name: String): EpicItem? {
@@ -87,6 +99,12 @@ fun registerEpicItemCommands(injector: Injector) {
             }
         }
 
+        literal("craft") {
+            runs {
+                openCraftingGUI(player)
+            }
+        }
+
         literal("give") {
             argument("item", StringArgumentType.string()) {
                 suggestList {
@@ -101,6 +119,12 @@ fun registerEpicItemCommands(injector: Injector) {
                     }
 
                     val itemStack = epicItemService.getItemStack(item)
+                    if (itemStack == null) {
+                        // TODO
+                        player.sendMessage("NOT FOUND YO FIX THIS")
+                        return@runs
+                    }
+
                     player.inventory.addItem(itemStack)
                     player.sendMessage("Added $itemStack")
                 }

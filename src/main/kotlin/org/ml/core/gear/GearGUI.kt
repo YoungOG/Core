@@ -8,7 +8,9 @@ import net.axay.kspigot.items.itemStack
 import net.axay.kspigot.items.meta
 import net.axay.kspigot.items.name
 import org.bukkit.Material
+import org.bukkit.entity.ExperienceOrb
 import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemStack
 import org.ml.core.CorePlugin
 import java.util.*
 import java.util.concurrent.ThreadLocalRandom
@@ -23,7 +25,7 @@ fun openGearGUI(player: Player) {
             val compound = createRectCompound<EpicItem>(
                 Slots.RowTwoSlotOne, Slots.RowSixSlotNine,
                 iconGenerator = {
-                    val stack = gearService.getItemStack(it.id)
+                    val stack = gearService.getItemStack(it.id)?: return@createRectCompound ItemStack.empty()
 //                    val stack = epicItemToItemStack(it)
                     cloneStack(stack) {
                         meta {
