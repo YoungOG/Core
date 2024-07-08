@@ -18,7 +18,9 @@ import org.bukkit.inventory.CraftingInventory
 import org.ml.core.crafting.CraftingGUI
 import org.ml.core.crafting.CraftingListeners
 import org.ml.core.crafting.CraftingService
+import org.ml.core.effect.InstantFireworkListeners
 import org.ml.core.gear.registerEpicItemCommands
+import org.ml.core.magic.MagicListeners
 import org.ml.core.magic.openSpellGUI
 import org.ml.core.magic.selectNextSpell
 import org.ml.core.magic.useSelectedSpell
@@ -69,6 +71,8 @@ class CorePlugin : KSpigot() {
 
         listener(ProfileListeners())
         listener(CraftingListeners())
+        listener(InstantFireworkListeners())
+        listener(MagicListeners())
 
         setupCommands()
     }

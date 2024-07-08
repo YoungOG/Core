@@ -2,8 +2,11 @@ package org.ml.core.crafting
 
 import com.google.inject.Inject
 import com.google.inject.Singleton
+import net.minecraft.world.entity.player.Player
 import org.bukkit.Material
 import org.bukkit.entity.HumanEntity
+import org.bukkit.event.world.ChunkUnloadEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
 import org.ml.core.config.ConfigService

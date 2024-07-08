@@ -27,10 +27,12 @@ data class OnlineProfile(
     val id: UUID,
     var name: String,
     val ignoredPlayers: List<UUID>,
-    var selectedSpell: Int,
-    val spells: List<Int>,
+    var selectedSpell: ActiveSpell,
+    val spells: List<ActiveSpell>,
 ) {
 }
+
+data class ActiveSpell(val index: Int, var cooldown: Int)
 
 @Singleton
 class ProfileService @Inject constructor(private val configService: ConfigService) {
@@ -54,13 +56,15 @@ class ProfileService @Inject constructor(private val configService: ConfigServic
 
         println("Loaded profile ${profile.name}")
 
+        val selectedSpell = ActiveSpell(0, 0)
+
         val onlineProfile = OnlineProfile(
             id,
             profile.name,
             profile.ignoredPlayers ?: emptyList(),
-            0,
+            selectedSpell,
 //            profile.spells ?: emptyList()
-            listOf(0, 1, 2)
+            listOf(selectedSpell, ActiveSpell(1, 0), ActiveSpell(2, 0))
         )
         profiles[id] = onlineProfile
     }

@@ -1,9 +1,7 @@
 package org.ml.core.crafting
 
 import com.google.inject.Inject
-import net.axay.kspigot.chat.KColors
 import net.axay.kspigot.chat.literalText
-import net.axay.kspigot.items.addLore
 import net.axay.kspigot.items.itemStack
 import net.axay.kspigot.items.meta
 import net.axay.kspigot.items.name
@@ -36,11 +34,8 @@ class CraftingListeners : Listener {
         if (inventory.holder !is CraftingGUI) {
             if (event.action == InventoryAction.MOVE_TO_OTHER_INVENTORY) {
                 val openInventory = event.whoClicked.openInventory.topInventory
-                if (openInventory.holder !is CraftingGUI) {
-                    return
-                }
-
-                updateInventory(openInventory)
+                if (openInventory.holder is CraftingGUI)
+                    updateInventory(openInventory)
             }
 
             return
@@ -61,7 +56,6 @@ class CraftingListeners : Listener {
             updateInventory(inventory)
         } else {
             event.isCancelled = true
-
         }
     }
 
@@ -115,9 +109,8 @@ class CraftingListeners : Listener {
 
     @EventHandler
     fun onDrag(event: InventoryDragEvent) {
-        if (event.inventory.holder !is CraftingGUI) return
-
-        event.isCancelled = true
+        if (event.inventory.holder is CraftingGUI)
+            event.isCancelled = true
     }
 
     @EventHandler
@@ -144,9 +137,8 @@ fun forCraftingSlots(run: (Int) -> Unit) {
 
 class CraftingGUI : InventoryHolder {
     override fun getInventory(): Inventory {
-        TODO("Not yet implemented")
+        throw Exception("IGNORED")
     }
-
 }
 
 private val BORDER = itemStack(Material.BLACK_STAINED_GLASS_PANE) {
